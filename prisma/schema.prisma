@@ -1,0 +1,62 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model motel {
+  id       Int       @id @default(autoincrement())
+  name     String
+  session  session[]
+  message  message[]
+}
+
+model session {
+  id         Int        @id @default(autoincrement())
+  motel_id   Int
+  created_at DateTime   @default(now()) @db.Timestamp(0)
+  motel      motel      @relation(fields: [motel_id], references: [id], onDelete: Cascade)
+  message    message[]
+  analysis   analysis[]
+}
+
+model message {
+  id         Int      @id @default(autoincrement())
+  motel_id   Int
+  session_id Int
+  content    String
+  remote     Boolean
+  created_at DateTime @default(now()) @db.Timestamp(0)
+
+  motel      motel    @relation(fields: [motel_id], references: [id], onDelete: Cascade)
+  session    session  @relation(fields: [session_id], references: [id], onDelete: Cascade)
+}
+
+model analysis {
+  id             Int       @id @default(autoincrement())
+  session_id     Int
+  satisfaction   Int
+  summary        String
+  improvement    String
+  created_at     DateTime  @default(now()) @db.Timestamp(0)
+  status         String?    @db.Varchar
+  updated_at     DateTime  @updatedAt @db.Timestamp(0)
+  session        session   @relation(fields: [session_id], references: [id], onDelete: Cascade)
+  stages         stage[]
+
+  @@index([conversation_id])
+  @@index([status])
+}
+
+model stage {
+  id           Int       @id @default(autoincrement())
+  analysis_id  Int
+  stage_name   String?
+  status       String?
+  result       Json?
+  error_details String?
+  started_at   DateTime  @default(now()) @db.Timestamp(0)
+  ended_at     DateTime? @db.Timestamp(0)
+  analysis     analysis  @relation(fields: [analysis_id], references: [id], onDelete: Cascade)
+
+  @@index([analysis_id])
+}
