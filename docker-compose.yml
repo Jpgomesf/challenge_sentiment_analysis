@@ -13,12 +13,26 @@ services:
       - ./prisma/sql/:/docker-entrypoint-initdb.d/
 
   analysis:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.analysis
     depends_on:
       - db
     container_name: analysis_runner
     restart: on-failure
     env_file: .env 
+
+  preview:
+    build:
+      context: .
+      dockerfile: Dockerfile.preview
+    container_name: analysis_preview
+    depends_on:
+      - db
+      - analysis
+    ports:
+      - "8501:8501"
+    env_file: .env
 
 volumes:
   postgres:
