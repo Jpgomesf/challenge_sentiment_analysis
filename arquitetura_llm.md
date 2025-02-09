@@ -163,6 +163,7 @@ Para facilitar a configuração e execução do projeto, siga os passos abaixo:
   - **SQLAlchemy:** ORM para interação com o banco de dados.
   - **Pydantic:** Validação e serialização dos dados.
   - **LangChain e OpenAI:** Para construir e executar pipelines (chains) que operam os agentes LLM.
+  - **Streamlit:** Para criar o **preview** das análises de forma interativa.
   - **Docker e Docker Compose:** Para facilitar a configuração, isolamento e execução da aplicação.
 
 - **Estrutura Modular:**
@@ -172,7 +173,7 @@ Para facilitar a configuração e execução do projeto, siga os passos abaixo:
   - **services/** – Lógica dos agentes LLM e orquestração do processamento.
   - **main.py** – Ponto de entrada da aplicação.
 
-- **Registro de Estágios (Stages):**  
+- **Registro de Estágios (Stages):**
   Cada etapa (stage) do processamento é registrada, permitindo identificar com clareza o andamento e a ocorrência de eventuais erros durante a execução dos agentes.
 
 ---
